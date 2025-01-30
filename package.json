@@ -1,0 +1,43 @@
+{
+    "name": "nestauth",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "dev": "tsc -w",
+        "build": "tsc"
+    },
+    "keywords": [
+        "nestjs",
+        "auth",
+        "jwt"
+    ],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "description": "",
+    "peerDependencies": {
+        "@nestjs/common": "^11.0.6",
+        "@nestjs/jwt": "^11.0.0",
+        "@nestjs/passport": "^11.0.5",
+        "passport": "^0.7.0",
+        "passport-jwt": "^4.0.1"
+    },
+    "devDependencies": {
+        "@nestjs/schematics": "^11.0.0",
+        "@nestjs/testing": "^11.0.6",
+        "@types/bcryptjs": "^2.4.6",
+        "@types/passport-jwt": "^4.0.1",
+        "@types/passport-local": "^1.0.38",
+        "typescript": "^5.7.3"
+    },
+    "files": [
+        "dist/",
+        "src/"
+    ],
+    "dependencies": {
+        "@nestjs/config": "^4.0.0",
+        "bcryptjs": "^2.4.3",
+        "passport-local": "^1.0.0"
+    }
+}
