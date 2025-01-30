@@ -5,16 +5,11 @@ import {
     Post,
     UseGuards,
     Body,
-    HttpException,
-    HttpStatus,
-    UseFilters,
 } from "@nestjs/common";
 import { NestAuthService } from "./nestauth.service";
-import { JwtAuthGuard } from "./jwt-auth.guard";
+import { NestAuthGuard } from "./nestauth.guard";
 import { LocalAuthGuard } from "./local-auth.guard";
-import { HttpExceptionFilter } from "./http-exception.filter";
 
-@UseFilters(HttpExceptionFilter)
 @Controller("nestauth")
 export class NestAuthController {
     constructor(private readonly nestAuthService: NestAuthService) {}
