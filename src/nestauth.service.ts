@@ -1,5 +1,10 @@
 import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
-import { NestAuthInterface } from "./nestauth.interface";
+import {
+    FacebookProfileType,
+    GoogleProfileType,
+    JwtPayloadType,
+    NestAuthInterface,
+} from "./nestauth.interface";
 import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
@@ -17,6 +22,26 @@ export class NestAuthService {
             }),
             refresh_token: this.jwtService.sign(user, { expiresIn: "7d" }),
         };
+    }
+
+    async google(user: GoogleProfileType): Promise<any> {
+        const payload: JwtPayloadType = await this.userService.google(user);
+
+        if (!payload) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+
+        return this.login(payload);
+    }
+
+    async facebook(user: FacebookProfileType): Promise<any> {
+        const payload: JwtPayloadType = await this.userService.facebook(user);
+
+        if (!payload) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+
+        return this.login(payload);
     }
 
     async refreshToken(refreshToken: string) {

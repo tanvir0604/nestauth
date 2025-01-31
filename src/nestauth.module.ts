@@ -5,13 +5,15 @@ import { NestAuthController } from "./nestauth.controller";
 import { NestAuthModuleOptions } from "./nestauth.interface";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
-import { JwtStrategy } from "./jwt.strategy";
-import { LocalStrategy } from "./local.strategy";
+import { NestAuthJwtStrategy } from "./nestauth-jwt.strategy";
+import { NestAuthLocalStrategy } from "./nestauth-local.strategy";
+import { NestAuthGoogleStrategy } from "./nestauth-google.strategy";
+import { NestAuthFacebookStrategy } from "./nestauth-facebook.strategy";
 import { APP_FILTER } from "@nestjs/core";
 import { HttpExceptionFilter } from "./http-exception.filter";
 
 @Module({
-    imports: [PassportModule, ConfigModule],
+    imports: [PassportModule, ConfigModule.forRoot({})],
 })
 export class NestAuthModule {
     static register(options: NestAuthModuleOptions): DynamicModule {
@@ -47,8 +49,10 @@ export class NestAuthModule {
             providers: [
                 NestAuthService,
                 UserServiceProvider,
-                JwtStrategy,
-                LocalStrategy,
+                NestAuthJwtStrategy,
+                NestAuthLocalStrategy,
+                NestAuthGoogleStrategy,
+                NestAuthFacebookStrategy,
                 JwtSecretProvider,
                 JwtExpiresInProvider,
                 {
