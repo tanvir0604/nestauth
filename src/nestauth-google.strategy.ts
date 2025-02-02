@@ -10,8 +10,9 @@ export class NestAuthGoogleStrategy extends PassportStrategy(
 ) {
     constructor() {
         super({
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            clientID: process.env.GOOGLE_CLIENT_ID || "your-client-id",
+            clientSecret:
+                process.env.GOOGLE_CLIENT_SECRET || "your-client-secret",
             callbackURL: process.env.BASE_URL + "/nestauth/google-redirect",
             scope: ["email", "profile"],
         });

@@ -7,6 +7,7 @@ import {
     Body,
     UnauthorizedException,
     HttpStatus,
+    All,
 } from "@nestjs/common";
 import { NestAuthService } from "./nestauth.service";
 import { NestAuthLocalGuard } from "./nestauth-local.guard";
@@ -16,6 +17,11 @@ import { NestAuthFacebookGuard } from "./nestauth-facebook.guard";
 @Controller("nestauth")
 export class NestAuthController {
     constructor(private readonly nestAuthService: NestAuthService) {}
+
+    @All()
+    async greetings(): Promise<string> {
+        return "Welcome to NestAuth. Please check our documentation for more information.";
+    }
 
     @UseGuards(NestAuthLocalGuard)
     @Post("login")

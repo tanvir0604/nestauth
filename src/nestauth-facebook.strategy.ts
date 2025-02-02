@@ -10,8 +10,8 @@ export class NestAuthFacebookStrategy extends PassportStrategy(
 ) {
     constructor() {
         super({
-            clientID: process.env.FACEBOOK_APP_ID,
-            clientSecret: process.env.FACEBOOK_APP_SECRET,
+            clientID: process.env.FACEBOOK_APP_ID || "your-app-id",
+            clientSecret: process.env.FACEBOOK_APP_SECRET || "your-app-secret",
             callbackURL: process.env.BASE_URL + "/nestauth/facebook-redirect",
             scope: ["email", "public_profile"],
             profileFields: ["id", "displayName", "photos", "email"],

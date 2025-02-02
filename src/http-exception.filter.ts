@@ -8,12 +8,20 @@ import { Request, Response } from "express";
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-    catch(exception: HttpException, host: ArgumentsHost) {
+    catch(exception: any, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
-        const status = exception.getStatus();
-        const message = exception.message;
+
+        let status = 500; // Default to Internal Server Error
+        let message = "Internal Server Error";
+
+        if (exception instanceof HttpException) {
+            status = exception.getStatus();
+            message = exception.message;
+        } else {
+            console.error("Unexpected error:", exception); // Log non-HTTP exceptions
+        }
 
         response.status(status).json({
             statusCode: status,
