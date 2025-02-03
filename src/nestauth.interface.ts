@@ -4,6 +4,7 @@ export interface NestAuthModuleOptions {
     UserService: Type<NestAuthInterface>;
     jwtSecret: string;
     jwtExpiresIn?: string;
+    jwtRefreshTokenExpiresIn?: string;
 }
 
 export type JwtPayloadType = {
@@ -13,6 +14,7 @@ export type JwtPayloadType = {
     username?: string;
     role?: string;
     pic?: string;
+    macId?: string;
 };
 
 export type SocialProfileType = {

@@ -32,6 +32,11 @@ export class NestAuthModule {
             useValue: options.jwtExpiresIn,
         };
 
+        const JwtRefreshTokenExpiresInProvider: Provider = {
+            provide: "JWT_REFRESH_TOKEN_EXPIRES_IN",
+            useValue: options.jwtRefreshTokenExpiresIn,
+        };
+
         return {
             module: NestAuthModule,
             imports: [
@@ -55,6 +60,7 @@ export class NestAuthModule {
                 NestAuthFacebookStrategy,
                 JwtSecretProvider,
                 JwtExpiresInProvider,
+                JwtRefreshTokenExpiresInProvider,
                 {
                     provide: APP_FILTER,
                     useClass: HttpExceptionFilter,

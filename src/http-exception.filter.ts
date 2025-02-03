@@ -13,14 +13,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
 
-        let status = 500; // Default to Internal Server Error
+        let status = 500;
         let message = "Internal Server Error";
 
         if (exception instanceof HttpException) {
             status = exception.getStatus();
             message = exception.message;
         } else {
-            console.error("Unexpected error:", exception); // Log non-HTTP exceptions
+            console.error("Unexpected error:", exception);
         }
 
         response.status(status).json({
