@@ -32,6 +32,7 @@ export type FacebookProfileType = SocialProfileType;
 
 export interface NestAuthInterface {
     validateUser(params: any): Promise<JwtPayloadType>;
+    getUserById(id: number): Promise<JwtPayloadType>;
     google(params: GoogleProfileType): Promise<JwtPayloadType>;
     facebook(params: FacebookProfileType): Promise<JwtPayloadType>;
 }

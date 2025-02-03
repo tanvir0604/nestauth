@@ -51,7 +51,7 @@ export class NestAuthService {
     async refreshToken(refreshToken: string) {
         try {
             const payload = this.jwtService.verify(refreshToken);
-            const user = await this.userService.validateUser(payload.id);
+            const user = await this.userService.getUserById(payload.sub);
             if (!user) {
                 throw new UnauthorizedException(
                     "Invalid or expired refresh token"

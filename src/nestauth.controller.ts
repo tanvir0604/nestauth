@@ -29,7 +29,7 @@ export class NestAuthController {
         return this.nestAuthService.login(req.user);
     }
 
-    @Get("refresh-token")
+    @Post("refresh-token")
     refreshToken(@Body() params: { refresh_token: string }): Promise<any> {
         return this.nestAuthService.refreshToken(params.refresh_token);
     }
