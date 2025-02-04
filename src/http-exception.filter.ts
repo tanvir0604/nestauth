@@ -4,6 +4,7 @@ import {
     ArgumentsHost,
     HttpException,
     NotFoundException,
+    UnauthorizedException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
 
@@ -24,6 +25,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
             status = exception.getStatus();
             message = exception.message;
         } else if (exception instanceof NotFoundException) {
+            status = exception.getStatus();
+            message = exception.message;
+        } else if (exception instanceof UnauthorizedException) {
             status = exception.getStatus();
             message = exception.message;
         } else {

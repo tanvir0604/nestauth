@@ -15,10 +15,10 @@ export class NestAuthJwtGuard extends AuthGuard("jwt") {
         if (!user) {
             throw new UnauthorizedException("Unauthorized: Invalid token");
         }
-        const currentMacId = await macaddress.one();
-        if (user.macId !== currentMacId) {
-            throw new UnauthorizedException("Unauthorized: Device mismatch");
-        }
+        // const currentMacId = await macaddress.one();
+        // if (user.macId !== currentMacId) {
+        //     throw new UnauthorizedException("Unauthorized: Device mismatch");
+        // }
         return true;
     }
 }

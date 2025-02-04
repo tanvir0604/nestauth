@@ -28,7 +28,7 @@
     "author": "Md Shafkat Hussain Tanvir <tanvir0604@gmail.com>",
     "license": "MIT",
     "type": "commonjs",
-    "description": "A NestJS authentication module that integrates JWT-based authentication and Passport strategies for secure user authentication.",
+    "description": "NestAuth is an authentication solution for NestJS applications, designed to handle user login, session management, and token-based authentication (JWT). It integrates seamlessly with Next.js and other frontends to provide a unified authentication system, supporting features like refresh tokens, secure cookie handling, and multi-provider authentication.",
     "dependencies": {
         "@nestjs/common": "^11.0.6",
         "@nestjs/jwt": "^11.0.0",
