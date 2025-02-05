@@ -26,6 +26,8 @@
         "typescript"
     ],
     "author": "Md Shafkat Hussain Tanvir <tanvir0604@gmail.com>",
+    "repository": "https://github.com/tanvir0604/nestauth",
+    "bugs": "https://github.com/tanvir0604/nestauth/issues",
     "license": "MIT",
     "type": "commonjs",
     "description": "NestAuth is an authentication solution for NestJS applications, designed to handle user login, session management, and token-based authentication (JWT). It integrates seamlessly with Next.js and other frontends to provide a unified authentication system, supporting features like refresh tokens, secure cookie handling, and multi-provider authentication.",
