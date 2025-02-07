@@ -59,10 +59,7 @@ Create a new file `user.service.ts` and add the following code:
 
 ```typescript
 import { Injectable } from "@nestjs/common";
-import {
-    JwtPayloadType,
-    NestAuthInterface,
-} from "@next-nest-auth/nestauth/dist/nestauth.interface";
+import { JwtPayloadType, NestAuthInterface } from "@next-nest-auth/nestauth";
 
 @Injectable()
 export class UserService implements NestAuthInterface {
