@@ -74,6 +74,15 @@ export class UserService implements NestAuthInterface {
             role: "user",
         };
     }
+
+    async getUserById(id: number): Promise<JwtPayloadType> {
+        return {
+            sub: id,
+            name: "John Doe",
+            email: "QlLZL@example.com",
+            role: "user",
+        };
+    }
 }
 ```
 
