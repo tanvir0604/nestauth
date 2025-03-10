@@ -1,6 +1,6 @@
 {
     "name": "@next-nest-auth/nestauth",
-    "version": "0.0.8",
+    "version": "1.0.0",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
@@ -33,17 +33,18 @@
     "description": "NestAuth is an authentication solution for NestJS applications, designed to handle user login, session management, and token-based authentication (JWT). It integrates seamlessly with Next.js and other frontends to provide a unified authentication system, supporting features like refresh tokens, secure cookie handling, and multi-provider authentication.",
     "dependencies": {
         "@nestjs/common": "^11.0.6",
-        "@nestjs/jwt": "^11.0.0",
-        "@nestjs/passport": "^11.0.5",
-        "passport": "^0.7.0",
-        "passport-jwt": "^4.0.1",
         "@nestjs/config": "^4.0.0",
+        "@nestjs/jwt": "^11.0.0",
+        "@nestjs/microservices": "^11.0.11",
+        "@nestjs/passport": "^11.0.5",
         "bcryptjs": "^2.4.3",
         "jsonwebtoken": "^9.0.2",
         "macaddress": "^0.5.3",
+        "passport": "^0.7.0",
         "passport-custom": "^1.1.1",
         "passport-facebook": "^3.0.0",
         "passport-google-oauth20": "^2.0.0",
+        "passport-jwt": "^4.0.1",
         "passport-local": "^1.0.0"
     },
     "devDependencies": {

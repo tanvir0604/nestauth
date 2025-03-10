@@ -1,4 +1,4 @@
-import { Module, DynamicModule, Provider } from "@nestjs/common";
+import { Module, DynamicModule, Provider, forwardRef } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestAuthService } from "./nestauth.service";
 import { NestAuthController } from "./nestauth.controller";
@@ -11,6 +11,7 @@ import { NestAuthGoogleStrategy } from "./nestauth-google.strategy";
 import { NestAuthFacebookStrategy } from "./nestauth-facebook.strategy";
 import { APP_FILTER } from "@nestjs/core";
 import { HttpExceptionFilter } from "./http-exception.filter";
+import { ClientsModule } from "@nestjs/microservices";
 
 @Module({
     imports: [PassportModule, ConfigModule.forRoot({})],
@@ -19,7 +20,7 @@ export class NestAuthModule {
     static register(options: NestAuthModuleOptions): DynamicModule {
         const UserServiceProvider: Provider = {
             provide: "UserService",
-            useClass: options.UserService,
+            useFactory: () => forwardRef(() => options.UserService),
         };
 
         const JwtSecretProvider: Provider = {
@@ -50,6 +51,7 @@ export class NestAuthModule {
                         },
                     }),
                 }),
+                forwardRef(() => ClientsModule),
             ],
             providers: [
                 NestAuthService,
