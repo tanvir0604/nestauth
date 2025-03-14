@@ -41,9 +41,10 @@ import { UserService } from "./user.service";
 @Module({
     imports: [
         NestAuthModule.register({
+            UserModule: UserModule,
             UserService: UserService,
             jwtSecret: process.env.JWT_SECRET || "my-secret-key",
-            jwtExpiresIn: "1h", // Set the expiration time for the JWT
+            jwtExpiresIn: "1m",
         }),
     ],
     providers: [UserService],

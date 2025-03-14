@@ -1,6 +1,7 @@
 import { Type } from "@nestjs/common";
 
 export interface NestAuthModuleOptions {
+    UserModule: Type<any>;
     UserService: Type<NestAuthInterface>;
     jwtSecret: string;
     jwtExpiresIn?: string;
