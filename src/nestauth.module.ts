@@ -14,62 +14,62 @@ import { HttpExceptionFilter } from "./http-exception.filter";
 import { ClientsModule } from "@nestjs/microservices";
 
 @Module({
-  imports: [PassportModule, ConfigModule.forRoot({})],
+    imports: [PassportModule, ConfigModule.forRoot({})],
 })
 export class NestAuthModule {
-  static register(options: NestAuthModuleOptions): DynamicModule {
-    const UserServiceProvider: Provider = {
-      provide: "UserService",
-      useFactory: () => forwardRef(() => options.UserService),
-    };
+    static register(options: NestAuthModuleOptions): DynamicModule {
+        const UserServiceProvider: Provider = {
+            provide: "UserService",
+            useExisting: options.UserService,
+        };
 
-    const JwtSecretProvider: Provider = {
-      provide: "JWT_SECRET",
-      useValue: options.jwtSecret || "60s",
-    };
+        const JwtSecretProvider: Provider = {
+            provide: "JWT_SECRET",
+            useValue: options.jwtSecret || "60s",
+        };
 
-    const JwtExpiresInProvider: Provider = {
-      provide: "JWT_EXPIRES_IN",
-      useValue: options.jwtExpiresIn,
-    };
+        const JwtExpiresInProvider: Provider = {
+            provide: "JWT_EXPIRES_IN",
+            useValue: options.jwtExpiresIn,
+        };
 
-    const JwtRefreshTokenExpiresInProvider: Provider = {
-      provide: "JWT_REFRESH_TOKEN_EXPIRES_IN",
-      useValue: options.jwtRefreshTokenExpiresIn,
-    };
+        const JwtRefreshTokenExpiresInProvider: Provider = {
+            provide: "JWT_REFRESH_TOKEN_EXPIRES_IN",
+            useValue: options.jwtRefreshTokenExpiresIn,
+        };
 
-    return {
-      module: NestAuthModule,
-      imports: [
-        JwtModule.registerAsync({
-          imports: [],
-          inject: [],
-          useFactory: async () => ({
-            secret: options.jwtSecret,
-            signOptions: {
-              expiresIn: options.jwtExpiresIn,
-            },
-          }),
-        }),
-        forwardRef(() => options.UserModule),
-      ],
-      providers: [
-        NestAuthService,
-        UserServiceProvider,
-        NestAuthJwtStrategy,
-        NestAuthLocalStrategy,
-        NestAuthGoogleStrategy,
-        NestAuthFacebookStrategy,
-        JwtSecretProvider,
-        JwtExpiresInProvider,
-        JwtRefreshTokenExpiresInProvider,
-        {
-          provide: APP_FILTER,
-          useClass: HttpExceptionFilter,
-        },
-      ],
-      exports: [NestAuthService],
-      controllers: [NestAuthController],
-    };
-  }
+        return {
+            module: NestAuthModule,
+            imports: [
+                JwtModule.registerAsync({
+                    imports: [],
+                    inject: [],
+                    useFactory: async () => ({
+                        secret: options.jwtSecret,
+                        signOptions: {
+                            expiresIn: options.jwtExpiresIn,
+                        },
+                    }),
+                }),
+                forwardRef(() => options.UserModule),
+            ],
+            providers: [
+                NestAuthService,
+                UserServiceProvider,
+                NestAuthJwtStrategy,
+                NestAuthLocalStrategy,
+                NestAuthGoogleStrategy,
+                NestAuthFacebookStrategy,
+                JwtSecretProvider,
+                JwtExpiresInProvider,
+                JwtRefreshTokenExpiresInProvider,
+                {
+                    provide: APP_FILTER,
+                    useClass: HttpExceptionFilter,
+                },
+            ],
+            exports: [NestAuthService],
+            controllers: [NestAuthController],
+        };
+    }
 }
