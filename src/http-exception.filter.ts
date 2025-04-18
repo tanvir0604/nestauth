@@ -3,8 +3,6 @@ import {
     Catch,
     ArgumentsHost,
     HttpException,
-    NotFoundException,
-    UnauthorizedException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
 
@@ -18,25 +16,35 @@ export class HttpExceptionFilter implements ExceptionFilter {
         let status = 500;
         let message = "Internal Server Error";
 
-        console.error("Caught Exception:", exception);
-        console.error("Exception Type:", exception.constructor.name);
+        // Check using instanceof or shape fallback
+        if (
+            exception instanceof HttpException ||
+            (exception?.status && exception?.response)
+        ) {
+            status = exception.status ?? 500;
 
-        if (exception instanceof HttpException) {
-            status = exception.getStatus();
-            message = exception.message;
-        } else if (exception instanceof NotFoundException) {
-            status = exception.getStatus();
-            message = exception.message;
-        } else if (exception instanceof UnauthorizedException) {
-            status = exception.getStatus();
-            message = exception.message;
+            const exceptionResponse =
+                exception.response ?? exception.getResponse?.();
+            if (typeof exceptionResponse === "string") {
+                message = exceptionResponse;
+            } else if (
+                typeof exceptionResponse === "object" &&
+                (exceptionResponse as any).message
+            ) {
+                message = (exceptionResponse as any).message;
+            } else if (
+                typeof exceptionResponse === "object" &&
+                (exceptionResponse as any).error
+            ) {
+                message = (exceptionResponse as any).error;
+            }
         } else {
             console.error("Unexpected error:", exception);
         }
 
         response.status(status).json({
             statusCode: status,
-            message: message,
+            message,
             path: request.url,
             app: "nestauth",
         });
