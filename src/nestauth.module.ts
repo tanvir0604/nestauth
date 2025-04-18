@@ -63,10 +63,10 @@ export class NestAuthModule {
                 JwtSecretProvider,
                 JwtExpiresInProvider,
                 JwtRefreshTokenExpiresInProvider,
-                {
-                    provide: APP_FILTER,
-                    useClass: HttpExceptionFilter,
-                },
+                // {
+                //     provide: APP_FILTER,
+                //     useClass: HttpExceptionFilter,
+                // },
             ],
             exports: [NestAuthService],
             controllers: [NestAuthController],

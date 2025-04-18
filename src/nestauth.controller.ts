@@ -8,12 +8,15 @@ import {
     UnauthorizedException,
     HttpStatus,
     All,
+    UseFilters,
 } from "@nestjs/common";
 import { NestAuthService } from "./nestauth.service";
 import { NestAuthLocalGuard } from "./nestauth-local.guard";
 import { NestAuthGoogleGuard } from "./nestauth-google.guard";
 import { NestAuthFacebookGuard } from "./nestauth-facebook.guard";
+import { HttpExceptionFilter } from "./http-exception.filter";
 
+@UseFilters(HttpExceptionFilter)
 @Controller("nestauth")
 export class NestAuthController {
     constructor(private readonly nestAuthService: NestAuthService) {}
