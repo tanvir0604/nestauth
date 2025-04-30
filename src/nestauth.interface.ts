@@ -16,7 +16,8 @@ export type JwtPayloadType = {
     role?: string;
     pic?: string;
     macId?: string;
-};
+    [key: string]: number | string | boolean | undefined;
+} | null;
 
 export type SocialProfileType = {
     id: string;
