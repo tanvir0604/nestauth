@@ -9,6 +9,7 @@ import {
     HttpStatus,
     All,
     UseFilters,
+    BadRequestException,
 } from "@nestjs/common";
 import { NestAuthService } from "./nestauth.service";
 import { NestAuthLocalGuard } from "./nestauth-local.guard";
@@ -34,6 +35,9 @@ export class NestAuthController {
 
     @Post("refresh-token")
     refreshToken(@Body() params: { refresh_token: string }): Promise<any> {
+        if (!params.refresh_token) {
+            throw new BadRequestException("Invalid or expired refresh token");
+        }
         return this.nestAuthService.refreshToken(params.refresh_token);
     }
 

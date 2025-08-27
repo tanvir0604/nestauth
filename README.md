@@ -105,7 +105,7 @@ To test if the installation is successful, call POST -> `http://localhost:3000/n
 
 ### 6 Refresh tokens
 
-To refresh your token call GET -> `http://localhost:3000/nestauth/refresh_token` with your params `refresh_token` with value `your-refresh-token`
+To refresh your token call POST -> `http://localhost:3000/nestauth/refresh-token` with your params `refresh_token` with value `your-refresh-token`
 
 #### On Success
 
