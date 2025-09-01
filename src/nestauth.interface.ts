@@ -9,7 +9,7 @@ export interface NestAuthModuleOptions {
 }
 
 export type JwtPayloadType = {
-    sub: number;
+    sub: number | string;
     name?: string;
     email?: string;
     username?: string;
@@ -34,7 +34,7 @@ export type FacebookProfileType = SocialProfileType;
 
 export interface NestAuthInterface {
     validateUser(params: any): Promise<JwtPayloadType>;
-    getUserById(id: number): Promise<JwtPayloadType>;
+    getUserById(id: number | string): Promise<JwtPayloadType>;
     google?(params: GoogleProfileType): Promise<JwtPayloadType>;
     facebook?(params: FacebookProfileType): Promise<JwtPayloadType>;
 }
