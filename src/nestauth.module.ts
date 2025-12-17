@@ -9,9 +9,7 @@ import { NestAuthJwtStrategy } from "./nestauth-jwt.strategy";
 import { NestAuthLocalStrategy } from "./nestauth-local.strategy";
 import { NestAuthGoogleStrategy } from "./nestauth-google.strategy";
 import { NestAuthFacebookStrategy } from "./nestauth-facebook.strategy";
-import { APP_FILTER } from "@nestjs/core";
-import { HttpExceptionFilter } from "./http-exception.filter";
-import { ClientsModule } from "@nestjs/microservices";
+import { StringValue } from "ms";
 
 @Module({
     imports: [PassportModule, ConfigModule.forRoot({})],
@@ -47,7 +45,9 @@ export class NestAuthModule {
                     useFactory: async () => ({
                         secret: options.jwtSecret,
                         signOptions: {
-                            expiresIn: options.jwtExpiresIn,
+                            expiresIn: options.jwtExpiresIn as
+                                | StringValue
+                                | number,
                         },
                     }),
                 }),

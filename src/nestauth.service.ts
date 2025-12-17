@@ -6,15 +6,17 @@ import {
     NestAuthInterface,
 } from "./nestauth.interface";
 import { JwtService } from "@nestjs/jwt";
+import { StringValue } from "ms";
 
 @Injectable()
 export class NestAuthService {
     constructor(
         private jwtService: JwtService,
         @Inject("UserService") private readonly userService: NestAuthInterface,
-        @Inject("JWT_EXPIRES_IN") private readonly jwtExpiresIn: string,
+        @Inject("JWT_EXPIRES_IN")
+        private readonly jwtExpiresIn: StringValue | number = "15m",
         @Inject("JWT_REFRESH_TOKEN_EXPIRES_IN")
-        private readonly jwtRefreshTokenExpiresIn: string
+        private readonly jwtRefreshTokenExpiresIn: StringValue | number = "7d"
     ) {}
 
     async login(user: any): Promise<any> {
@@ -22,7 +24,9 @@ export class NestAuthService {
             accessToken: this.jwtService.sign(user, {
                 expiresIn: this.jwtExpiresIn || "15m",
             }),
-            refreshToken: this.jwtService.sign(user, { expiresIn: "7d" }),
+            refreshToken: this.jwtService.sign(user, {
+                expiresIn: this.jwtRefreshTokenExpiresIn || "7d",
+            }),
             accessTokenExpiresIn: this.jwtExpiresIn || "15m",
             refreshTokenExpiresIn: this.jwtRefreshTokenExpiresIn || "7d",
         };
