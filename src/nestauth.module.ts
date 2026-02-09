@@ -1,4 +1,11 @@
-import { Module, DynamicModule, Provider, forwardRef } from "@nestjs/common";
+import {
+    Module,
+    DynamicModule,
+    forwardRef,
+    UseFilters,
+    Controller,
+    Inject,
+} from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestAuthService } from "./nestauth.service";
 import { NestAuthController } from "./nestauth.controller";
@@ -10,44 +17,35 @@ import { NestAuthLocalStrategy } from "./nestauth-local.strategy";
 import { NestAuthGoogleStrategy } from "./nestauth-google.strategy";
 import { NestAuthFacebookStrategy } from "./nestauth-facebook.strategy";
 import { StringValue } from "ms";
-import { RouterModule } from "@nestjs/core";
+import { HttpExceptionFilter } from "./http-exception.filter";
 
 @Module({
     imports: [PassportModule, ConfigModule.forRoot({})],
 })
 export class NestAuthModule {
     static register(options: NestAuthModuleOptions): DynamicModule {
-        const UserServiceProvider: Provider = {
-            provide: "UserService",
-            useExisting: options.UserService,
-        };
+        // Create unique tokens for each module instance
+        const moduleId = options.routePrefix || "default";
+        const AUTH_SERVICE_TOKEN = Symbol(`NestAuthService_${moduleId}`);
+        const USER_SERVICE_TOKEN = Symbol(`UserService_${moduleId}`);
 
-        const JwtSecretProvider: Provider = {
-            provide: "JWT_SECRET",
-            useValue: options.jwtSecret || "60s",
-        };
+        const controllerPath = options.routePrefix
+            ? `${options.routePrefix.replace(/^\/|\/$/g, "")}/nestauth`
+            : "nestauth";
 
-        const JwtExpiresInProvider: Provider = {
-            provide: "JWT_EXPIRES_IN",
-            useValue: options.jwtExpiresIn,
-        };
-
-        const JwtRefreshTokenExpiresInProvider: Provider = {
-            provide: "JWT_REFRESH_TOKEN_EXPIRES_IN",
-            useValue: options.jwtRefreshTokenExpiresIn,
-        };
-
-        const prefix = options.routePrefix || "nestauth";
+        @UseFilters(HttpExceptionFilter)
+        @Controller(controllerPath)
+        class DynamicNestAuthController extends NestAuthController {
+            constructor(
+                @Inject(AUTH_SERVICE_TOKEN) nestAuthService: NestAuthService,
+            ) {
+                super(nestAuthService);
+            }
+        }
 
         return {
             module: NestAuthModule,
             imports: [
-                RouterModule.register([
-                    {
-                        path: prefix,
-                        module: NestAuthModule,
-                    },
-                ]),
                 JwtModule.registerAsync({
                     imports: [],
                     inject: [],
@@ -63,22 +61,41 @@ export class NestAuthModule {
                 forwardRef(() => options.UserModule),
             ],
             providers: [
-                NestAuthService,
-                UserServiceProvider,
+                // NestAuthService with unique token
+                {
+                    provide: AUTH_SERVICE_TOKEN,
+                    useClass: NestAuthService,
+                },
+                // UserService with unique token
+                {
+                    provide: USER_SERVICE_TOKEN,
+                    useExisting: options.UserService,
+                },
+                // Alias for backward compatibility
+                {
+                    provide: "UserService",
+                    useFactory: (userService) => userService,
+                    inject: [USER_SERVICE_TOKEN],
+                },
+                {
+                    provide: "JWT_SECRET",
+                    useValue: options.jwtSecret,
+                },
+                {
+                    provide: "JWT_EXPIRES_IN",
+                    useValue: options.jwtExpiresIn,
+                },
+                {
+                    provide: "JWT_REFRESH_TOKEN_EXPIRES_IN",
+                    useValue: options.jwtRefreshTokenExpiresIn,
+                },
                 NestAuthJwtStrategy,
                 NestAuthLocalStrategy,
                 NestAuthGoogleStrategy,
                 NestAuthFacebookStrategy,
-                JwtSecretProvider,
-                JwtExpiresInProvider,
-                JwtRefreshTokenExpiresInProvider,
-                // {
-                //     provide: APP_FILTER,
-                //     useClass: HttpExceptionFilter,
-                // },
             ],
-            exports: [NestAuthService],
-            controllers: [NestAuthController],
+            exports: [AUTH_SERVICE_TOKEN, "UserService"],
+            controllers: [DynamicNestAuthController],
         };
     }
 }
