@@ -4,8 +4,8 @@ This README provides instructions to set up authentication in a NestJS applicati
 
 ## Prerequisites
 
--   Node.js and npm installed on your machine
--   NestJS application set up
+- Node.js and npm installed on your machine
+- NestJS application set up
 
 ## Installation Instructions
 
@@ -45,6 +45,7 @@ import { UserService } from "./user.service";
             UserService: UserService,
             jwtSecret: process.env.JWT_SECRET || "my-secret-key",
             jwtExpiresIn: "1m",
+            routePrefix: "nestauth",
         }),
     ],
     providers: [UserService],
