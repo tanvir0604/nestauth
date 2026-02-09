@@ -18,7 +18,7 @@ import { NestAuthFacebookGuard } from "./nestauth-facebook.guard";
 import { HttpExceptionFilter } from "./http-exception.filter";
 
 @UseFilters(HttpExceptionFilter)
-@Controller("nestauth")
+@Controller()
 export class NestAuthController {
     constructor(private readonly nestAuthService: NestAuthService) {}
 

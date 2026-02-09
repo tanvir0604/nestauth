@@ -6,6 +6,7 @@ export interface NestAuthModuleOptions {
     jwtSecret: string;
     jwtExpiresIn?: string;
     jwtRefreshTokenExpiresIn?: string;
+    routePrefix?: string;
 }
 
 export type JwtPayloadType = {

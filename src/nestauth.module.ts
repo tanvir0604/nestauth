@@ -10,6 +10,7 @@ import { NestAuthLocalStrategy } from "./nestauth-local.strategy";
 import { NestAuthGoogleStrategy } from "./nestauth-google.strategy";
 import { NestAuthFacebookStrategy } from "./nestauth-facebook.strategy";
 import { StringValue } from "ms";
+import { RouterModule } from "@nestjs/core";
 
 @Module({
     imports: [PassportModule, ConfigModule.forRoot({})],
@@ -36,9 +37,17 @@ export class NestAuthModule {
             useValue: options.jwtRefreshTokenExpiresIn,
         };
 
+        const prefix = options.routePrefix || "nestauth";
+
         return {
             module: NestAuthModule,
             imports: [
+                RouterModule.register([
+                    {
+                        path: prefix,
+                        module: NestAuthModule,
+                    },
+                ]),
                 JwtModule.registerAsync({
                     imports: [],
                     inject: [],
