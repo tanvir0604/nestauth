@@ -12,11 +12,11 @@ import { StringValue } from "ms";
 export class NestAuthService {
     constructor(
         private jwtService: JwtService,
-        @Inject("UserService") private readonly userService: NestAuthInterface,
+        readonly userService: NestAuthInterface,
         @Inject("JWT_EXPIRES_IN")
         private readonly jwtExpiresIn: StringValue | number = "15m",
         @Inject("JWT_REFRESH_TOKEN_EXPIRES_IN")
-        private readonly jwtRefreshTokenExpiresIn: StringValue | number = "7d"
+        private readonly jwtRefreshTokenExpiresIn: StringValue | number = "7d",
     ) {}
 
     async login(user: any): Promise<any> {
@@ -58,7 +58,7 @@ export class NestAuthService {
             const user = await this.userService.getUserById(payload.sub);
             if (!user) {
                 throw new UnauthorizedException(
-                    "Invalid or expired refresh token"
+                    "Invalid or expired refresh token",
                 );
             }
             return this.login(user);
